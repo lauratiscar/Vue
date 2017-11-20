@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Guestbook Application</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+		<div id="box">
+			<form @submit.prevent="addComment()" style="border:2px solid red;width:500px">
+				<fieldset>
+				<legend style="text-align:center;">Write your comment!</legend>
+					<label for="nombre">Name</label>
+					<input type="text" v-model="newname"/>
+					<br/>
+					<label for="email">Email</label>
+					<input type="text" v-model="newemail"/>
+					<br/>	
+					<label for="comentario">Comment</label>
+					<input type="text" v-model="newcomment"/>														
+					<input type="submit" value="Add yours :)">
+			</form>		
+
+			</fieldset>
+			</form>
+
+
+			<p>Guestbook comments</p>
+			<ul style="list-style-type:none">
+				<li v-for="comment in comments">
+					Nombre: {{comment.nombre}}<br/>
+					Email: {{comment.email}}<br/>
+					Mensaje: {{comment.comentario}}
+					<div style="height:20px;width:300px;background:red"/></div>
+				</li>
+				
+			</ul>
+
+		</div>
+
+		<script type="text/javascript">
+
+		/*	Vue.component('vistaformulario',{
+				template:'<div></div>'
+
+			});*/
+
+			new Vue({
+				el:"#box",
+				data:{
+					comments:
+						[{nombre:"Laura",email:"laura@outlook.com",comentario:"Fue genial... ¡os quiero!"},
+						 {nombre:"Lidia",email:"lidlid@gmail.com",comentario:"enhorabuena parejita"},
+						 {nombre:"Carla",email:"kkkarla@yahoo.es",comentario:"congrats!"}
+						 ]
+					}, 
+				methods:{
+					addComment(){
+						this.comments.unshift(this.newcomment);
+						this.newcomment = null;
+						this.comments.unshift(this.newname);
+						this.newcomment = null;
+						this.comments.unshift(this.newemail);
+						this.newcomment = null;						
+					}
+
+					},
+			});
+		</script>
+
+	</body>
+</html>

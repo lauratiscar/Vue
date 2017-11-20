@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Guestbook Application</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+		<div id="box">
+			<!-- componente1 -->
+			<vistaformulario></vistaformulario>
+
+
+			<form @submit.prevent="addComment()" style="border:2px solid red;width:500px">
+				<fieldset>
+				<legend style="text-align:center;">Write your comment!</legend>
+					<label for="comentario">Comment</label>
+					<input type="text" v-model="newcomment"/>
+					<input type="submit" value="Add yours :)">
+			</form>		
+
+			</fieldset>
+			</form>
+			
+			<!-- componente2 -->
+			<p>Guestbook comments</p>
+			<ul style="list-style-type:none">
+				<li v-for="comment in comments">{{comment}}<div style="height:3px;width:300px;background:red"/></div></li>
+			</ul>
+
+		</div>
+
+		<script type="text/javascript">
+
+			Vue.component('vistaformulario',{
+				template:'<div>perro</div>'
+
+			});
+
+			Vue.component('vistacomentarios',{
+				template:'<div>gato</div>'	
+
+			});
+
+			new Vue({
+				el:"#box",
+				data:{
+					comments:
+						["Fue genial... ¡os quiero!", "enhorabuena parejita", "congrats!"]
+					}, 
+				methods:{
+					addComment(){
+						this.comments.unshift(this.newcomment);
+						this.newcomment = null;
+					}
+
+					},
+			});
+		</script>
+
+	</body>
+</html>

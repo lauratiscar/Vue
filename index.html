@@ -1,0 +1,670 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Curso de VueJS 2</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> 
+		<script src="js/vue.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue2-filters/dist/vue2-filters.min.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>   <!-- LIBRERÍA AXIOS -->			
+	</head>
+	<body>
+		<!-- 1 INTERPOLACIÓN BÁSICA: BINDING POR INTERPOLACIÓN CON {{}} 
+		en otras palabras, VUE muestra las propiedades del modelo en una vista-->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			1. Binding por interpolación: VUE muestra las propiedades del modelo en una vista
+		</p>
+
+		<main> <!-- main es una etiqueta que VUE reconoce -->
+		<p>
+			{{message}}
+		</p>
+		</main>
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			new Vue({
+				el:"main",
+				data:{message: "Esto es una interpolación básica con {{}}"}, 
+			});
+		</script>
+
+		<!-- 2 INTERPOLACIÓN CON DIRECTIVA v-text -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			2. Interpolación con la directiva v-text
+		</p>	
+
+		<p id="titulo" v-text="texto"></p>	
+		<hr style="width:100%;color:red"/>
+
+		<script type="text/javascript">
+			new Vue({
+				el:"#titulo",
+				data:{texto:"esto es una interpolación con la directiva v-text"},
+			});
+		</script>		
+
+		<!-- 3 INTERPOLACIÓN CON DIRECTIVA v-model -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			3. Interpolación con la directiva v-model, la de los input 
+		</p>				
+
+		<div id="contenedor">
+			<input style="width:200px" type="text" v-model="valorovalue"/>
+		</div>
+		<hr style="width:100%;color:red"/>	
+
+		<script type="text/javascript">
+			new Vue({
+				el:"#contenedor",
+				data:{
+					valorovalue:"Soy la directiva v-model"},
+			});
+		</script>
+
+		<!-- 4 EJEMPLO DE REACTIVIDAD EN INPUT CON v-model y {{}} -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			4. Ejemplo de REACTIVIDAD en input: v-model más {{}} (two way data binding, enlace de detos bidireccional)
+		</p>		
+
+		<form>
+			<input style="width:200px" type="text" v-model="nombre"/>
+			<p>Su nombre es: {{ nombre }} </p>
+		</form>
+		<hr style="width:100%;color:red"/>
+
+		<script type="text/javascript">
+			new Vue({
+				el:"form",
+				data:{nombre:"Escriba aquí su nombre"
+
+				},
+			});
+		</script>
+
+		<!-- 5 VER TODAS LAS PROPIEDADES QUE HAY DENTRO DEL OBJETO (DENTRO DE DATA) CON $data
+			Siguiedo el ejemplo anterior -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			5. VISIBILIZAR DATA<br/>Continuando con el ejemplo básico de reactividad anterior, cómo ver todas las propiedades que hay dentro del objeto (en data) con $data.<br/>Observa cómo se interconectan vista, usuario y código.
+		</p>			
+
+		<form id="form2">
+			<p v-text="formulariobasic"></p>
+			<input style="width:200px" type="text" v-model="apell"/>
+			<p>Su apellido es: {{ apell }} </p>
+			<pre> {{$data}} </pre>
+		</form>
+		<hr style="width:100%;color:red"/>
+
+		<script type="text/javascript">
+			new Vue({
+				el:"#form2",
+				data:{
+					formulariobasic:"Otro ejemplo:",
+					apell:""
+				},	
+			});
+		</script>
+		
+		<p style="font-family:helvetica;font-size: 15px;color:red">
+			¿QUÉ ES UNA DIRECTIVA?<br/>
+			Una directiva es un atributo que se le pone a un elemento html, como h3, y que nos permite darle una funcionalidad a ese elemento (añadir una propiedad, evento, etc.).
+		</p>
+
+
+		<!-- 6 DIRECTIVAS CONDICIONALES: nos permiten crear if, else... -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			6. Ejemplo de directiva condicional: comprobamos si existe <span style="font-style:italic">nota</span> y si es igual o inferior a 4.9 (supenso).
+		</p>	
+
+		<main id="ejercicio6"> 
+			Escribe aquí tu nota <input type="text" v-model="nota"/><br/>
+			<p v-if="nota && nota >= 0 && nota<5">
+				Tu nota es {{nota}}. Estás suspenso.
+			</p>
+			<p v-else-if="nota && nota>=5 && nota<=10">
+				Yes! Aprobaste.
+			</p>
+			<p v-else-if="nota && nota<0 || nota>10">
+				Esa nota no es válida. Debe ser un número entre 0 y 10.
+			</p>
+			<p v-else>Escribe tu nota... Con números, cachondo.</p>
+		</main>
+		<hr style="width:100%;color:red"/>
+
+		<script type="text/javascript">
+			new Vue({
+				el:"#ejercicio6",
+				data:{
+					nota:"",
+					
+				},	
+			});
+		</script>
+
+		<!-- 7 DIRECTIVA DE ITERACIÓN v-for (bucles) -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			7. ARRAY: Ejemplo de directiva de iteración v-for (bucles): dentro de una propiedad, como antes era nota (las propiedades están en data), recogeremos un array [].
+		</p>
+
+		<div id="siete">
+			<h3>Lista de películas creadas con un v-for</h3>
+			<ol>
+				<li v-for="variable in peliculas">{{variable}}
+				</li>							
+			</ol>
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			new Vue({
+				el:"#siete",
+				data:{
+					peliculas:["Mulán","El Rey León","Aladín","Dinosaurios"],}	
+					
+			});
+		</script>
+
+		<!-- 8 DIRECTIVA DE ITERACIÓN v-for (bucles) -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			8. ARRAY DE OBJETOS: Ejemplo de directiva de iteración v-for (bucles): acabamos de recorrer un array con v-for, pero ahora recorreremos un array o colección de objetos (lista de listas)
+		</p>
+
+		<div id="ocho">
+			<h3>Frutas</h3>
+			<ul>
+				<li v-for="(fruta,index) in frutas">{{index}}. La {{fruta.nombre}} es de temporada de {{fruta.temporada}} y su coste es {{fruta.coste}}.
+				</li>							
+			</ul>
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			/* Igual que en el anterior, crearemos una varible in la propiedad (fruta in frutas) pero, al contar con más componentes que el nombre de la fruta, separamos cada variable.nombredelapropiedad (fruta.nombre). Index no es lo más importante, pero observa cómo actúa: numerando cada li, aunque tengamos una lista desordenada. */
+			new Vue({
+				el:"#ocho",
+				data:{
+					frutas:[
+						{nombre: "piña", temporada: "verano", coste: "bajo"},
+						{nombre: "mora", temporada: "ootoño", coste: "medio"},
+						{nombre: "granada", temporada: "invierno", coste: "medio"},
+						{nombre: "fresa", temporada: "primavera", coste: "alto"}
+							],
+					}	
+			});
+		</script>
+
+		<!-- 9 DIRECTIVA DE ITERACIÓN v-for (bucles) -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			9. OBJETO: v-for, capítulo 3. Recorrer las propiedades de un objeto. Veremos el listado de propiedades de una de las frutas anteriores.
+		</p>
+
+		<div id="recorridaobjetos">
+			<h3>Propiedades de la granada</h3>
+			<ul style="list-style-type:none">
+				<li v-for="(value, key, index) in superfruta">
+					 {{index}}: su {{key}} es {{value}}.
+				</li>							
+			</ul>
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+		/* 
+		value sería el valor que tiene la propiedad que estamos recorriendo: "granada", "invierno" y "medio" son values. 
+		key sería el nombre que tiene la propiedad de ese objeto: nombre, temporada y coste son key.
+		index es el número que tienen cada conjunto key-value: nombre: "granada" tiene index 0. 
+		*/
+			new Vue({
+				el:"#recorridaobjetos",
+				data:{
+					superfruta: {nombre: "granada",temporada: "invierno", coste: "medio"} ,
+				}
+			});
+		</script>
+
+
+		<!-- 10 EVENTOS -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			10. EVENTOS: al igual que javascript, Vue cuenta con eventos como onClick, onMouseOver... Y, al igual que las propiedades se guardaban en data, <span style="font-weight:bold">los eventos se guardan en methods</span>.
+		</p>
+
+		<div id="eventos" style="width:400px;border:1px solid">
+			Tanto v-on:click como @click son dos formas de ejecutar la misma función (puedes escoger cualquiera).<br/>
+			<button v-on:click="anadircomentario()">Añadir comentario</button>
+			<button @click="borrarcomentario()">Eliminar comentario</button>			
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			new Vue({
+				el:"#eventos",
+				data:{
+				},
+				methods:{
+					anadircomentario(){
+						alert("método o función para añadir");
+						},
+					borrarcomentario(){
+						alert("método o función para eliminar");
+						}
+				}	
+			});
+		</script>
+
+		<!-- 11 EVENTOS: añadir y eliminar comentario -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			11. EVENTOS: COMBINACIÓN DE MÉTODO DE ENVÍO JUNTO A BUCLE PARA CREAR UN LISTADO DE COMENTARIOS.<br/>
+			<span style="font-weight:bold">IMPORTANTE:</span> independientemente de que se añadan o eliminen comentarios, esto se borrará al actualizar la página, quedando solo los definidos dentro del atributo <span style="font-style:italic">comentarios</span> en el código.
+		</p>
+
+		<div id="ejercicioeventos">
+			<h3>Comentarios</h3>
+			<ul>
+				<li v-for="(comentario,index) in comentarios">{{comentario}}
+					<button @click="borrarComentario(index)">Eliminar comentario</button>
+				</li>							
+			</ul>
+			<form @submit.prevent="nuevoComentario()">
+				<!-- .prevent es vital para que el formulario no recargue la página y pueda publicarse el nuevo comentario-->
+
+				<input type="text" v-model="otrocomentario"/>
+				<input type="submit" value="Enviar comentario"/>
+
+			</form>
+
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+	
+			new Vue({
+				el:"#ejercicioeventos",
+				data:{
+					comentarios:["Felicidades!","Vivan los novios",":)","¡Os queremos!"],
+					},
+				otrocomentario: null,
+				methods:{
+					nuevoComentario(){
+						//alert(this.otrocomentario); //con this accedemos a data, y con otroComentario a esa propiedad
+						 this.comentarios.unshift(this.otrocomentario);
+						 this.otrocomentario = null;
+					},
+					borrarComentario(indice){
+						this.comentarios.splice(indice,1)
+					}
+				}	
+			});
+		</script>
+
+		<!-- 12 PROPIEDADES COMPUTADAS -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			12. PROPIEDADES COMPUTADAS: nos permiten procesar la información que hay en una propiedad. Están enfocadas al código y no a la vista.
+		</p>
+
+		<div id="computando">
+			<!--Soy {{nombre + " " + apellido + " " + fecha}}.<br/>	--> <!-- ejemplo de concatenación con + . Ahora utilizaremos una propiedad computada para ahorrar código en la vista, de modo que con una sola variable acojamos nombre y apellido.-->		
+			Soy {{nombreYapellido}}<br/>
+			<p style="color:blue">Cogemos el listado de comentarios utilizados en el ej anterior y los ordenamos alfabéticamente con .sort</p>
+			<ul style="list-style-type:none"><li v-for="comentario in ordenandoCom">{{comentario}}</li></ul>
+			<!-- aquí hemos usado ordenandoCom como una propiedad, no como una función (propiedad computada) -->
+
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			new Vue({
+				el:"#computando",
+				data:{
+					nombre: "Laura", apellido: "Tíscar", fecha: "12 de noviembre", comentarios:["Felicidades!","Vivan los novios","Os queremos!",":)"], 
+					},
+				methods:{},
+				computed:{			
+					nombreYapellido(){
+						var anio = new Date();
+						var year = anio.getFullYear();
+						return this.nombre+" "+this.apellido+" y estamos a día "+anio.getDate()+ ", en el mes " +anio.getMonth()+ " y en el año "+year+". En otras palabras, hoy es "+anio.getDate()+"/"+anio.getMonth()+"/"+anio.getFullYear();
+						
+						/* IMPORTANTE:
+						Acabamos de ver dos formas de ejecutar métodos, como var year = (...) y creándolo dentro del return (ejemplo de getMonth).
+						*/
+						},
+					ordenandoCom(){
+						return this.comentarios.sort(); // para devolver todos los valores del atributo comentarios por orden ALFABÉTICO
+						}
+					}
+			});
+		</script>
+
+		<!-- 13 FILTROS -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			13. FILTROS: los filtros son funciones que se ejecutan cuando le pasamos un parámetro. Por ejemplo, el filtro capitalize para pasar a mayúsculas. 
+		</p>
+
+		<div id="filtros">
+			a) Filtro con la sintaxis <span style="color:red">| nombreDelFiltro</span>. Este es un filtro "automático": gracias a que hemos instalado el CDN de filters en nuestro head. <!-- Ejemplo:  {{message | uppercase}}-->	<br/><br/>
+			{{message | uppercase}}	<br/><br/>
+
+			b) Filtro con el método filter dentro de una propiedad computada: <span style="color:orange">No entendido...</span>
+
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			new Vue({
+				el:"#filtros",
+				data:{
+					message:"hola caracola",
+					frutas:[
+						{nombre: "piña", temporada: "verano", coste: "bajo"},
+						{nombre: "mora", temporada: "otoño", coste: "medio"},
+						{nombre: "granada", temporada: "invierno", coste: "medio"},
+						{nombre: "fresa", temporada: "primavera", coste: "alto"}
+							],
+			
+				},})
+		
+		</script>
+
+		<!-- 14 EVENTOS -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			14. VARIAS INSTANCIAS. Podemos crear varias instancias separadas por ; y la sintaxis será siempre la misma: <span style="color:red">new Vue({})</span>. Como cada instancia tiene su el (el espacio en el que tiene poder, como <span style="color:red">el:"#ejemplo"</span>), una propiedad que se llame igual en dos instancias diferentes (y con dos el diferentes) no se afectarán la una a la otra.
+		</p>
+
+		<div id="app" >
+			{{ejemplo}}
+		</div>
+		<div id="app2" >
+			{{ejemplo}}
+		</div>
+
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			new Vue({
+				el:"#app",
+				data:{
+				ejemplo:"Soy una instancia con la propiedad ejemplo."
+				},	
+			});
+			new Vue({
+				el:"#app2",
+				data:{
+				ejemplo:"Soy otra instancia con la propiedad ejemplo."
+				},	
+			});
+
+		</script>
+
+		<!-- 15 BINDING DE CLASES: directiva v-bind  -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			15. BINDING DE CLASES O VINCULAR UNA CLASE A UN ELEMENTO: directiva v-bind.<br/> La directiva <span style="color:red">v-bind</span> nos permite añadir propiedades cuando se cumpla una condición. Por ejemplo, que al clicar un elemento de la lista se le añada una clase que le otorgue background green.
+		</p>
+		<style type="text/css">
+			.verde{background:green;color:white;font-weight:bold;}
+		</style>
+		<div id="unirclases" >
+			<h4 >LISTA</h4>
+			<ol>
+				<!-- con v-bind:class={verde:index==1} le decimos que otorgue la clase verde cuando el index del objeto de la lista sea 2-->
+				<li @click="alclicar(index)" v-bind:class="{verde:index ==confirmado }" v-for="(producto,index) in listacompra">{{producto}}</li>
+			</ol>
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			new Vue({
+				el:"#unirclases",
+				data:{
+					listacompra:["huevos","leche","pan","harina","aceite"],
+					confirmado: null,
+				},	
+				methods:{
+					alclicar(ind){
+						this.confirmado=ind;
+					}
+				}
+			});
+
+		</script>
+
+		<!-- 16 PETICIONES AJAX  -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			16. PETICIONES AJAX: y uso del método mounted(), que no es más que lo que se ejecutará nada más cargar la página.
+			<span style="color:orange">(No entendido...)</span>
+		</p>
+
+		<style type="text/css">
+			.ennegrita{font-weight:bold;}
+		</style>
+
+		<div id="probandoajax" >
+			<h4 >Legumbres</h4>
+			<ol>
+				<li @click="alhacerclick(index)" v-bind:class="{ennegrita:index == senalado }" v-for="(producto,index) in listacompra">{{producto}}</li>
+			</ol>
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			new Vue({
+				el:"#probandoajax",
+				mounted(){
+					/*alert("Aquí, probando mounted!");*/
+					/* llamamos al objeto axios que hemos enlazado con la librería CDN con el método get() */
+				},
+				data:{
+					listacompra:["garbanzos","judías","lentejas"],
+					senalado: null,
+				},	
+				methods:{
+					alhacerclick(index){
+						this.senalado=	index
+						}
+					}
+				
+			});
+
+		</script>
+
+
+		<!-- 17 COMPONENTES  -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			17. COMPONENTES-NOCIONES BÁSICAS: un componente podría definirse como un bloque de la web que es independiente y que puede reutilizarse. Generan etiquetas, como en nuestro caso es la etiqueta <peliculilla></peliculilla> y que puede reutilizarse. <br/><br/>La estructura del componente se asemeja a la estructura de la instancia vue, pero <span style="font-weight:bold">mientras que vue cuenta con la propiedad data y que acoge a una serie de propiedades que son globales, y con métodos que también actúan de manera global, en el componente tendremos que definir estas propiedades como funciones</span>. De este modo estas funciones o métodos actuarán de manera aislada. Asimismo, si queremos especificar la propiedad data, que en la instancia es data:{}, en el componente será data(){}.
+		</p>
+
+		<div id="componentes" >
+			<h4 >Películas</h4>
+			<peliculilla></peliculilla>
+			<ol>
+				<li v-for="pelicula in movies">{{pelicula}}</li>
+			</ol>
+			<pintor></pintor>
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			Vue.component('peliculilla',{
+				template:"<h1>De prueba, pero soy un componenteeee!</h1>"
+			});
+
+			Vue.component('pintor',{
+				template:"<h3 style='color:green'> Soy el pintor {{aqui}}</h3>",
+				data(){return{aqui:"Hopper"}}/* las propiedades que aquí creemos solo actuarán dentro del componente 'pintor'*/
+
+			});
+
+			new Vue({
+				el:"#componentes",
+				data:{
+					movies:["Ahora o nunca","Star Wars","El silencio de los corderos"],
+				},	
+				methods:{}
+				
+			});
+
+		</script>
+
+		<!-- 18 COMPONENTES II  -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			17. COMPONENTES II
+		</p>
+
+		<div id="componentes2" >
+			A) Cómo pasar una propiedad al componente desde la instancia normal (PROPS). Con <span style="color:red">:objeto</span> le digo relléname la propiedad objeto que tengo en props con el valor de animales, en este caso.
+			
+			<animal :objetodeprueba="animales"></animal> <!-- así, a objetodeprueba le damos el valor de nuestra propiedad de data animales --><br/><br/>
+
+			B) ¿Y si no quiero definir mi plantilla en el componente (dentro de template)? Recojo el contenido de template (puedo, incluso, borrar template:,) y me lo llevo dentro de mi etiqueta animal. Después indico a mi componente que mi plantilla <span style="color:red">va a ser una plantilla en línea con la directiva inline-template.</span>
+
+			<animal :objetodeprueba="animales" inline-template>
+				<h2>Ese animal es un {{objetodeprueba.nombre}}, de tipo {{objetodeprueba.tipo}}</h2>
+			</animal>
+
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			Vue.component('animal',{
+				props:['objetodeprueba'], /* objetodeprueba es un nombre genérico con el que recogeremos "animales. ver línea 534" */
+				template:"<h2>Ese animal es un {{objetodeprueba.nombre}}, de tipo {{objetodeprueba.tipo}}</h2>" /* todo el interior del template tiene que acogerse bajo una etiqueta única. Si hay un h1 y un h2, guardar ambos en un div, por ej.*/
+			});
+
+			new Vue({
+				el:"#componentes2",
+				data:{
+					animales:{nombre:"perro",tipo:"cánido",color:"marrón"},
+				},
+				
+			});
+
+		</script>
+
+		<!-- 19 COMPONENTES III  -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			19. COMPONENTES III: cómo usar componentes dentro de otros componentes.
+		</p>
+
+		<span style="color:green">Ejercicios de repaso</span>
+		<div id="componentes3" >
+			<h4 >Bricolaje</h4>
+			<ol>
+				<li v-for="herramienta in herramientas">
+					Esta herramienta es {{herramienta.nombre}}, y su material es {{herramienta.material}}.
+					
+				</li>
+			</ol>
+			<hr/>
+
+			<herramienta :elemento="cliente"></herramienta>
+		
+		<span style="color:green">Ejercicio componente hijo dentro del padre</span>		
+	
+			<padre></padre>
+		
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			Vue.component('herramienta',{
+				props:['elemento'],
+				template:"<h4>El cliente llamado {{elemento.nombre}} se gastó {{elemento.monto}} euros.</h4>"
+			});
+
+			Vue.component('padre',{
+				template:"<div><h3>Soy el componente padre</h3><hijo></hijo></div>"
+			});
+
+			Vue.component('hijo',{
+				template:"<p style='color:orange'>Y yo... soy el hijo</p>"
+			});		
+
+			new Vue({
+				el:"#componentes3",
+				data:{
+					herramientas:[
+					{nombre:"martillo",material:"metal"},
+					{nombre:"alicates",material:"plástico"},
+					{nombre:"destornillador",material:"metal"},
+					{nombre:"segueta",material:"madera"},
+					{nombre:"clavos",material:"metal"},					
+					],
+					cliente:
+					{nombre:"Jose",monto:137},
+				},	
+				
+			});
+
+
+		</script>
+
+		<!-- 20 COMPONENTES IV  -->
+		<p style="font-family:helvetica;font-size: 15px;color:blue">
+			20. COMPONENTES IV: cómo usar COMPONENTES DINÁMICOS:por ejemplo, mi aplicación está dividida en un formulario y un conjunto de mensajes. Añadiré botones que al pulsar nos permitan cambiar entre ambos componentes.
+		</p>
+
+		<span style="color:green">Componentes dinámicos</span>
+		<div id="componentes4">
+		<!--	
+			<listacolores :elemento="msg" style="border:2px solid red;display:inline-block;height:200px"></listacolores>
+
+			<frase style="border:2px solid red;display:inline-block;height:200px"></frase>
+		-->
+			<component :is="elegido" style="height:200px;width:200px;border:2px solid black"></component>
+			<button @click="elegido='fraseb'">Ver fraseb</button>
+			<button @click="elegido='frase'">Ver frase</button>
+
+		</div>
+
+		<hr style="width:100%;color:red"/>
+		
+		<script type="text/javascript">
+			
+			Vue.component('frase',{
+				template:"<div>Noticia de última hora</div>"
+			});
+
+			Vue.component('fraseb',{
+				template:"<div style='color:red'>Es tan corto el amor, y es tan largo el olvido.</div>"				
+			});
+
+		
+
+			new Vue({
+				el:"#componentes4",
+				data:{
+				
+					elegido:'frase',
+				},	
+				
+			});
+
+
+		</script>
+
+
+
+	</body>
+</html>
+
